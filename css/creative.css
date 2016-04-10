@@ -60,6 +60,10 @@ p {
     background-color: #222;
 }
 
+.bg-grey{
+    background-color:#eee;
+}
+
 .text-faded {
     color: rgba(255,255,255,.7);
 }
@@ -473,4 +477,9 @@ img::-moz-selection {
 
 body {
     webkit-tap-highlight-color: #222;
+}
+
+.press-img{
+    height: 120px;
+    margin: auto;
 }
