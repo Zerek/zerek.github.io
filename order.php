@@ -1,3 +1,16 @@
+<?php
+  if($_SESSION["token"] !== $_POST["token"]){
+
+  }
+  if(!empty($_POST["email"])){
+    $email = $_POST["email"];
+    echo "<h1>$email</h1>";
+  }
+
+  $token = bin2hex(random_bytes(32));
+
+  $_SESSION["token"] = $token;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,135 +106,41 @@
                     <h2 class="section-heading">У нас есть то, что вам нужно!</h2>
                     <hr class="light">
                     <p class="text-faded">Качественный перевод с гарантией. Возможность отслеживать заказ. Заверение перевода. Доставка заказа. Онлайн оплата и POS-терминал. Бонусная карта.</p>
-                    <a href="mailto:info@zerek.kz" class="btn btn-default btn-xl">Заказать сейчас</a>
+                    <a href="#" class="btn btn-default btn-xl" data-toggle="modal" data-target="#orderNow">Заказать сейчас</a>
                 </div>
             </div>
         </div>
     </section>
-
-    <section id="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Лучшие услуги</h2>
-                    <hr class="primary">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-file-text-o wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">    
-                    <h4>Письменный перевод</h4>
-                    <p class="text-muted">Перевод текста, документов, аудио и видео материалов.</p>
-                </div>
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-microphone wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4>Устный перевод</h4>
-                    <p class="text-muted">Перевод встреч, семинаров, тренингов, конференций, форумов.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-diamond wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4>Нотариальное заверение</h4>
-                    <p class="text-muted">Заверение верности перевода, подлинности подписи переводчика.</p>    
-                </div>
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-pencil-square-o wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4>Редактирование текста</h4>
-                    <p class="text-muted">Вычитка и приведение в правильную форму перевода.</p>
-                    </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-keyboard-o wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4>Стенограмма</h4>
-                    <p class="text-muted">Дословная запись (набор текста) докладов и других выступлений на конференциях.</p>    
-                </div>
-                <div class="col-lg-2 text-center">
-                    <i class="fa fa-4x fa-comments-o wow bounceIn text-primary"></i>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4>Парафраз</h4>
-                    <p class="text-muted">Изложение текста своими словами или словами-синонимами.</p>
-                    </div>
-            </div>
-
-        </div>
-    </section>
-	
-	<aside id="press" class="bg-grey">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">О Нас пишут</h2>
-                    <hr class="primary">
-                </div>
-            </div>
-        </div>
-		<div class = "container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-                    <a href="http://forbes.kz/process/businessmen/kak_odolet_trudnosti_perevoda"><img src="img/download.png" class="img-responsive press-img"></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="http://rbkca.kiock.kz/files/assets/basic-html/page20.html"><img src="img/rbk_logo.png" class="img-responsive press-img"></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="http://total.kz/economics/2013/11/25/v_almaty_opredelili_luchshego_pr"><img src="img/totalLogo.svg" class="img-responsive press-img" ></a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <a href="#"><img src="img/bnv__logo.jpg" class="img-responsive press-img"></a>
-                </div>
-			</div>
-		</div>
-	</aside>
 		
-	<section id="statistics" class="bg-primary">
-		<div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Немного статистики</h2>
-                    <hr class="light"/>
-                </div>
-            </div>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <form action="?" method="post">
+              <input type="hidden" name="token" value="<?php echo $token; ?>">
+              <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Почта</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="email@example.com" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="file">Файл для перевода</label>
+                <input type="file" id="file" required>
+                <p class="help-block">Файл не должен превышать 20мб. Если файл превышает напишите нам на почту. Мы найдем способ получить файл.</p>
+              </div>
+              <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+          </div>
         </div>
-		<div class="container">
-			<div class="row">
-			 <div class="col-lg-3 col-md-6 text-center">
-				<h1>1.3M+</h1>
-				<p>страниц текста</p>
-			 </div>
-			 
-			 <div class="col-lg-3 col-md-6 text-center">
-				<h1>980+</h1>
-				<p>компании доверяют нам</p>
-			 </div>
-			 
-			 <div class="col-lg-3 col-md-6 text-center">
-				<h1>27K+</h1>
-				<p>часов устной речи</p>
-			 </div>
-			 
-			 <div class="col-lg-3 col-md-6 text-center">
-				<h1>22K+</h1>
-				<p>людей доверяют нам</p>
-			 </div>
-			</div>
-		</div>
-	</section>
+      </div>
+    </section>
 
     <aside class="bg-dark">
         <div class="container text-center">
@@ -261,11 +180,10 @@
 	<aside class="bg-dark">
         <div class="container text-center">
             <div class="call-to-action">
-                <a href="https://www.facebook.com/zerektranslation/" target="_blank" class="btn wow tada" style="color:#3B5998"><i class="fa fa-facebook fa-2x"></i></a>
-				<a href="https://plus.google.com/b/100733991449261952153/100733991449261952153/about?gmbpt=true&hl=en" target="_blank" class="btn wow tada" style="color:#d34836"><i class="fa fa-google-plus fa-2x"></i></a>
-				<a href="https://vk.com/public37948364" target="_blank" class="btn wow tada" style="color:#597ba0"><i class="fa fa-vk fa-2x"></i></a>
+                <a href="https://www.facebook.com/zerekgroup/" target="_blank" class="btn wow tada" style="color:#3B5998"><i class="fa fa-facebook fa-2x"></i></a>
+				<!-- <a href="https://plus.google.com/b/100733991449261952153/100733991449261952153/about?gmbpt=true&hl=en" target="_blank" class="btn wow tada" style="color:#d34836"><i class="fa fa-google-plus fa-2x"></i></a> -->
 				<a href="https://www.instagram.com/zerek.kz/" target="_blank" class="btn wow tada" style="color: #9b6954"><i class="fa fa-instagram fa-2x"></i></a>
-				<a href="https://twitter.com/ztranslation" target="_blank" class="btn wow tada" style="color:#55acee"><i class="fa fa-twitter fa-2x"></i></a>
+				<!-- <a href="https://twitter.com/ztranslation" target="_blank" class="btn wow tada" style="color:#55acee"><i class="fa fa-twitter fa-2x"></i></a> -->
             </div>
         </div>
     </aside>
