@@ -93,7 +93,7 @@
                     <h2 class="section-heading">У нас есть то, что вам нужно!</h2>
                     <hr class="light">
                     <p class="text-faded">Качественный перевод с гарантией. Возможность отслеживать заказ. Заверение перевода. Доставка заказа. Онлайн оплата и POS-терминал. Бонусная карта.</p>
-                    <a href="#" class="btn btn-default btn-xl" data-toggle="modal" data-target="#orderNow">Заказать сейчас</a>
+                    <a href="order.php" class="btn btn-default btn-xl">Заказать сейчас</a>
                 </div>
             </div>
         </div>
@@ -227,7 +227,7 @@
         <div class="container text-center">
             <div class="call-to-action">
                 <h2>Закажите у нас перевод и Вы забудете о поиске других алтернатив!</h2>
-                <a href="mailto:info@zerek.kz" class="btn btn-default btn-xl wow tada">Заказать сейчас!</a>
+                <a href="order.php" class="btn btn-default btn-xl wow tada">Заказать сейчас!</a>
             </div>
         </div>
     </aside>

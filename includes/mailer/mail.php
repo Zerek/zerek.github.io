@@ -10,6 +10,7 @@
 
     function send_mail(string $to, string $name, string $phone, string $comment, string $filepath, string $filename){
         try {
+            // echo $to, $name, $filepath, $filename;
             $mail = new PHPMailer(true);
             //server settings
             // $mail->SMTPDebug = 2;

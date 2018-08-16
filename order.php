@@ -8,11 +8,13 @@
         $msg = '';
         $send = false;
         $maxFileSize = 25000000;
-        echo $_SERVER['DOCUMENT_ROOT'];
         if($_SERVER["REQUEST_METHOD"] === "POST"){
             if($_SESSION["token"] === $_POST["token"]){
                 $sanitized = secure_input($_POST);
-                if(array_key_exists("file", $_FILES) || $_FILES["file"]["error"] !== UPLOAD_ERR_OK){
+                if(array_key_exists("file", $_FILES) && $_FILES["file"]["error"] === UPLOAD_ERR_OK){
+                    
+                    // print_r($_FILES);
+
                     $file = $_FILES["file"];
                     $tmp_name = $file["tmp_name"];
 
@@ -25,27 +27,27 @@
                     if(!$email) $msg = 'Почта не правильная';
                     
                     $phone = is_phone($sanitized["phone"]);
-                    echo 'Phone: ', $sanitized["phone"], $phone;
                     if(!$phone) $msg = 'Телефон не правильная';
 
                     $name = $sanitized["name"];
                     $comment = $sanitized["comment"];
-                    
+                    // echo $msg . "\n";
                     if(empty($msg)){
                         $upload_dir = path_join($upload_dir, $sanitized["email"]);
                         $send = send_mail($email, $name, $phone, $comment, $tmp_name, $filename);
                     }
                 } else {
-                    $msg = 'Произошла ошибка во время загрузки файла\n';
+                    $msg = "Произошла ошибка во время загрузки файла\n";
+                    // print_r($_FILES);
                 }
             }
         }
         $token = bin2hex(random_bytes(32));
         $_SESSION["token"] = $token;
     } catch(Exception $e) {
-        echo 'Caught exception: ',  $e->getMessage(), "\n";
+        // echo 'Caught exception: ',  $e->getMessage(), "\n";
     } catch(Throwable $e){
-        echo 'Caught error: ', $e->getMessage(), "\n";
+        // echo 'Caught error: ', $e->getMessage(), "\n";
     }
     
 ?>
