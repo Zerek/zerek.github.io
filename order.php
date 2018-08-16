@@ -1,15 +1,53 @@
 <?php
-  if($_SESSION["token"] !== $_POST["token"]){
+    try{
+        require "functions/utils.php";
+        require "includes/mailer/mail.php";
+        require_once("includes/config.php");
+        session_start();
+        $upload_dir = $_SERVER["DOCUMENT_ROOT"]."/uploads";
+        $msg = '';
+        $send = false;
+        $maxFileSize = 25000000;
+        echo $_SERVER['DOCUMENT_ROOT'];
+        if($_SERVER["REQUEST_METHOD"] === "POST"){
+            if($_SESSION["token"] === $_POST["token"]){
+                $sanitized = secure_input($_POST);
+                if(array_key_exists("file", $_FILES) || $_FILES["file"]["error"] !== UPLOAD_ERR_OK){
+                    $file = $_FILES["file"];
+                    $tmp_name = $file["tmp_name"];
 
-  }
-  if(!empty($_POST["email"])){
-    $email = $_POST["email"];
-    echo "<h1>$email</h1>";
-  }
+                    if($file['size'] > $maxFileSize) $msg = 'Файл слишком большой';
 
-  $token = bin2hex(random_bytes(32));
+                    $filename = is_valid_extension($file["name"]);
+                    if(!$filename) $msg = 'Формат файла не поддерживается';
+                    
+                    $email = is_email($sanitized["email"]);
+                    if(!$email) $msg = 'Почта не правильная';
+                    
+                    $phone = is_phone($sanitized["phone"]);
+                    echo 'Phone: ', $sanitized["phone"], $phone;
+                    if(!$phone) $msg = 'Телефон не правильная';
 
-  $_SESSION["token"] = $token;
+                    $name = $sanitized["name"];
+                    $comment = $sanitized["comment"];
+                    
+                    if(empty($msg)){
+                        $upload_dir = path_join($upload_dir, $sanitized["email"]);
+                        $send = send_mail($email, $name, $phone, $comment, $tmp_name, $filename);
+                    }
+                } else {
+                    $msg = 'Произошла ошибка во время загрузки файла\n';
+                }
+            }
+        }
+        $token = bin2hex(random_bytes(32));
+        $_SESSION["token"] = $token;
+    } catch(Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    } catch(Throwable $e){
+        echo 'Caught error: ', $e->getMessage(), "\n";
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,29 +149,41 @@
             </div>
         </div>
     </section>
-		
+    <?php 
+        if(!$send) {
+
+    ?>
+    <!--FORM SECTION-->
     <section>
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
-            <form action="?" method="post">
+            <form action="?" method="post" enctype="multipart/form-data">
+              <p class="text-danger"><?php echo $msg;?></p>
               <input type="hidden" name="token" value="<?php echo $token; ?>">
               <div class="form-group">
-                <label for="name">Имя</label>
-                <input type="text" id="name" name="name" class="form-control" required>
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" class="form-control" required>
               </div>
               <div class="form-group">
-                <label for="email">Почта</label>
+                <label for="email">Почта:</label>
                 <input type="email" id="email" name="email" class="form-control" placeholder="email@example.com" required>
               </div>
               <div class="form-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" name="phone" class="form-control" required>
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7-123-456-7890" class="form-control" required pattern="\+[7]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                <p class="help-block">Введите в формате +7-123-456-7890.</p>
               </div>
               <div class="form-group">
-                <label for="file">Файл для перевода</label>
-                <input type="file" id="file" required>
-                <p class="help-block">Файл не должен превышать 20мб. Если файл превышает напишите нам на почту. Мы найдем способ получить файл.</p>
+                <label for="name">Комментарии:</label>
+                <input type="textarea" id="comment" name="comment" class="form-control" required rows="3">
+                <p class="help-block">Напишите с какого языка на какой нужно перевести.</p>
+              </div>
+              <div class="form-group">
+                <label for="file">Файл для перевода:</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize;?>">
+                <input type="file" id="file" name="file" required>
+                <p class="help-block">Файл не должен превышать 25мб. Если файл превышает 25мб напишите нам на почту info@zerek.kz.</p>
               </div>
               <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
@@ -141,7 +191,24 @@
         </div>
       </div>
     </section>
-
+    <!--END FORM SECTION-->
+    <?php
+        } else {
+    ?>
+    <!--THANK YOU SECTION-->
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            Rakhmet!
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--END THANK YOU SECTION-->
+    <?php 
+        }
+    ?>
     <aside class="bg-dark">
         <div class="container text-center">
             <div class="call-to-action">
