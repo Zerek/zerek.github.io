@@ -6,6 +6,7 @@
         session_start();
         $upload_dir = $_SERVER["DOCUMENT_ROOT"]."/uploads";
         $msg = '';
+        // $to = '';
         $send = false;
         $maxFileSize = 25000000;
         if($_SERVER["REQUEST_METHOD"] === "POST"){
@@ -68,8 +69,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
 
     <!-- Custom Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
 
     <!-- Plugin CSS -->
@@ -99,7 +100,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Zerek Company</a>
+                <a class="navbar-brand page-scroll" href="index.php#page-top">Zerek Company</a>
                 <span class="navbar-brand pull-right">+77084252800</span>
             </div>
 
@@ -107,16 +108,16 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#about">О нас</a>
+                        <a class="page-scroll" href="index.php#about">О нас</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">Услуги</a>
+                        <a class="page-scroll" href="index.php#services">Услуги</a>
                     </li>
 					<li>
-                        <a class="page-scroll" href="#press">В новостях</a>
+                        <a class="page-scroll" href="index.php#press">В новостях</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#statistics">Статистика</a>
+                        <a class="page-scroll" href="index.php#statistics">Статистика</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Контакты</a>
@@ -201,8 +202,10 @@
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-md-4 col-md-offset-4">
-            Rakhmet!
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading">Rakhmet!</h2>
+            <hr class="primary">
+            <p class="text-muted">С Вами скоро свяжутся по указанным контактам: <strong><?php echo $email?></strong></p>
           </div>
         </div>
       </div>
@@ -266,7 +269,7 @@
     <script src="js/wow.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="js/creative.js"></script>
-
+    <?php include "includes/googleanalytics.php"; ?>
 </body>
 
 </html>
