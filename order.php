@@ -9,6 +9,7 @@
         // $to = '';
         $send = false;
         $maxFileSize = 25000000;
+        $token = bin2hex(random_bytes(32));
         if($_SERVER["REQUEST_METHOD"] === "POST"){
             if($_SESSION["token"] === $_POST["token"]){
                 $sanitized = secure_input($_POST);
@@ -19,16 +20,16 @@
                     $file = $_FILES["file"];
                     $tmp_name = $file["tmp_name"];
 
-                    if($file['size'] > $maxFileSize) $msg = 'Файл слишком большой';
+                    if($file['size'] > $maxFileSize) $msg = 'Допустимы размер файла превышен';
 
                     $filename = is_valid_extension($file["name"]);
                     if(!$filename) $msg = 'Формат файла не поддерживается';
                     
                     $email = is_email($sanitized["email"]);
-                    if(!$email) $msg = 'Почта не правильная';
+                    if(!$email) $msg = 'Укажите правильную почту';
                     
                     $phone = is_phone($sanitized["phone"]);
-                    if(!$phone) $msg = 'Телефон не правильная';
+                    if(!$phone) $msg = 'Укажите телефон в формате +7-123-456-7890';
 
                     $name = $sanitized["name"];
                     $comment = $sanitized["comment"];
@@ -43,11 +44,16 @@
                 }
             }
         }
-        $token = bin2hex(random_bytes(32));
         $_SESSION["token"] = $token;
     } catch(Exception $e) {
+        error_log($e->getMessage());
+        header("Location: https://zerek.kz/error.html");
+        die();
         // echo 'Caught exception: ',  $e->getMessage(), "\n";
     } catch(Throwable $e){
+        error_log($e->getMessage());
+        header("Location: https://zerek.kz/error.html");
+        die();
         // echo 'Caught error: ', $e->getMessage(), "\n";
     }
     
@@ -178,15 +184,15 @@
                 <p class="help-block">Введите в формате +7-123-456-7890.</p>
               </div>
               <div class="form-group">
-                <label for="name">Комментарии:</label>
+                <label for="name">Комментарий:</label>
                 <input type="textarea" id="comment" name="comment" class="form-control" required rows="3">
-                <p class="help-block">Напишите с какого языка на какой нужно перевести.</p>
+                <p class="help-block">Напишите с какого языка на какой язык нужно перевести.</p>
               </div>
               <div class="form-group">
                 <label for="file">Файл для перевода:</label>
                 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxFileSize;?>">
                 <input type="file" id="file" name="file" required>
-                <p class="help-block">Файл не должен превышать 25мб. Если файл превышает 25мб напишите нам на почту info@zerek.kz.</p>
+                <p class="help-block">Файл не должен превышать 25мб. Если файл превышает 25мб, напишите нам на почту: <strong>info@zerek.kz<strong>.</p>
               </div>
               <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
@@ -203,7 +209,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading">Rakhmet!</h2>
+            <h2 class="section-heading">Спасибо, Ваш заказ принять на обработку!</h2>
             <hr class="primary">
             <p class="text-muted">С Вами скоро свяжутся по указанным контактам: <strong><?php echo $email?></strong></p>
           </div>
